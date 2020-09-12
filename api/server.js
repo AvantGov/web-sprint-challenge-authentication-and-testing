@@ -18,7 +18,7 @@ server.use(express.json());
 server.use(session({
     resave: false,
     saveUninitialized: false,
-    secret: 'set up in environment',
+    secret: process.env.JWT_VERIFY,
     store: new KnexSessionStore({
         knex: database_access,
         createtable: true
