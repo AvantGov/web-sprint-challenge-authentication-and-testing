@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const session = require("express-session");
-const KnexSessionStore = require("connect-session-store")(session)
+const KnexSessionStore = require("connect-session-knex")(session)
 const database_access = require("../database/dbConfig")
 const environment = require("dotenv/config")
 
@@ -24,7 +24,6 @@ server.use(session({
         createtable: true
     })
 }))
-server.use(environment)
 
 server.use('/api/auth', authRouter);
 server.use('/api/jokes', authenticate, jokesRouter);

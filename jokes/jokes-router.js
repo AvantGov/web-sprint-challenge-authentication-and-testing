@@ -4,7 +4,7 @@ const router = require('express').Router();
 const verify_middleware = require("../auth/authenticate-middleware")
 
 // * added in verify_middleware to the endpoint to verify user credentials
-router.get('/', verify_middleware(), (req, res) => {
+router.get('/', verify_middleware.restrict(), (req, res) => {
   const requestOptions = {
     headers: { accept: 'application/json' },
   };
