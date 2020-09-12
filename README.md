@@ -26,11 +26,20 @@ Be prepared to demonstrate your understanding of this week's concepts by answeri
 
 1. Differences between using _sessions_ or _JSON Web Tokens_ for authentication.
 
+## JSON web tokens allow for validation of credentials without the need for a shared state between components, improving the security measures taken during inter-component interactions. Sessions require a shared state to validate.
+
 2. What does `bcrypt` do to help us store passwords in a secure manner.
+
+## bcrpyt allows for us to store the value of passwords without storing the string literal of the password value. This safeguards information from malicious actors in the case of unauthorized user base dumps, etc. 
 
 3. How are unit tests different from integration and end-to-end testing.
 
+## unit tests involve isolating functionality to test pure returns (same value in > same value out), where as integration testing is used to test the interactions between functional areas of the system without outside resource reference, and end-to-end testing is used to evaluate functioanlity when interacting with the system as a whole and external resources.
+
 4. How _Test Driven Development_ changes the way we write applications and tests.
+
+## TDD involves asserting functional expectation before funtional code is written in the system. This improves development by accounting for specifications and code requirements earlier in the developement cycle.
+
 
 You are expected to be able to answer questions in these areas. Your responses contribute to your Sprint Challenge grade.
 
