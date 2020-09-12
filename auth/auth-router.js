@@ -25,6 +25,7 @@ const database_access__findByFilter = (filter) => {
   return database_access("users")
     .select("id", "username", "password")
     .where(filter)
+    .first()
 }
 
 // * sign up users by entering creds in the database
@@ -33,17 +34,11 @@ router.post('/register', async (req, res, next) => {
     const { username, password } = req.body
     const user = await database_access__findByFilter({ username })
 
-
-    // * attempted to implement this check but returns a false positive 
-    // * limiting the functionality 
-    // * validation of existent user already exists in the table requirements 
-    // * don't know what else to do. Encoutnered server errors trying to debug
-    // * had to change port ###s? no idea why. 
-    // if(user) {
-    //   return res.status(409).json({
-    //     message: "user already exists"
-    //   })
-    // }
+    if(user) {
+      return res.status(409).json({
+        message: "user already exists"
+      })
+    }
     
 
     const newUser = await database_access__add({
@@ -78,7 +73,7 @@ router.post('/login', async (req, res, next) => {
 
     req.session.user = user
 
-    res.json({
+    res.status(200).json({
       message: `welcome, ${user.username}`
     })
 
