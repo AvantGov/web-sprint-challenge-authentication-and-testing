@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const database_access = require("../database/dbConfig")
 const secure = require("bcryptjs")
+const jwt = require("jsonwebtoken")
 
 
 // * adding users to the database
@@ -52,34 +53,70 @@ router.post('/register', async (req, res, next) => {
   }
 });
 
-router.post('/login', async (req, res, next) => {
-  try {
+// router.post('/login', async (req, res, next) => {
+//   try {
+//     const {username, password} = req.body
+//     const user = await database_access__findByFilter({ username })
+
+//     if(!user) {
+//       return res.status(401).json({
+//         message: "user credentials are invalid"
+//       })
+//     }
+
+//     const passwordValid = await secure.compare(req.body.password, user.password)
+
+//     if(!passwordValid) {
+//       return res.status(401).json({
+//         message: "invalid credentials"
+//       })
+//     }
+
+//     const token = generateToken(user)
+
+//     function generateToken (user) {
+//       const payload =  {
+//         subject: user.id,
+//         username: user.username
+//       }
+//     }
+
+//     // res.status(200).json({
+//     //   message: `welcome, ${user.username}`
+//     // })
+
+//     return jwt.sign(payload, process.env.JWT_VERIFY)
+
+//   } catch(error) { 
+//     next(error) 
+//   }
+// });
+
+
+router.post('/login', (req, res) => {
     const {username, password} = req.body
-    const user = await database_access__findByFilter({ username })
 
-    if(!user) {
-      return res.status(401).json({
-        message: "user credentials are invalid"
+    database_access__findByFilter({ username })
+      .then((user) => {
+        if (user && secure.compareSync(password, user.password)) {
+          const token = generateToken(user)
+
+          res.status(200).json({
+            message: `welcome, ${user.username}`,
+            token: token
+          })
+        } else {
+          res.status(401).json({
+            message: 'invalid credentials'
+          })
+        }
       })
-    }
-
-    const passwordValid = await secure.compare(req.body.password, user.password)
-
-    if(!passwordValid) {
-      return res.status(401).json({
-        message: "invalid credentials"
+      .catch((error) => {
+        res.status(500).json(error)
       })
-    }
-
-    req.session.user = user
-
-    res.status(200).json({
-      message: `welcome, ${user.username}`
-    })
-
-  } catch(error) { 
-    next(error) 
-  }
 });
+
+
+
 
 module.exports = router;

@@ -30,7 +30,7 @@ describe("integration testing for registration", () => {
 
     it("POST /register with existing user", async () => {
         const res = await supertest(server)
-            .post("api/auth/register")
+            .post("/api/auth/register")
             .send(currentUser)
         expect(res.statusCode).toBe(409)
         expect(res.type).toBe("application/json")
